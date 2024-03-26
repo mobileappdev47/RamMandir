@@ -314,7 +314,8 @@ public class MainActivity extends FlutterActivity {
                             PrintLine p1 = new TextPrintLine(str1, PrintLine.CENTER,
                                     30);
                             printerManager.addPrintLine(p1);
-                            String str2 = "PAY AND PARK\n*************";
+                            String str2 = jsonobject.getString(
+                                    "Middle") + "\n*************";
                             Bitmap bitmap = TexttoImageEncode(
                                     getApplicationContext(),
                                     jsonobject.getString(
@@ -322,7 +323,7 @@ public class MainActivity extends FlutterActivity {
                             printerManager.addPrintLine(new BitmapPrintLine(bitmap,
                                     PrintLine.CENTER));
                             PrintLine p2 = new TextPrintLine(str2, PrintLine.CENTER,
-                                    40);
+                                    30);
                             printerManager.addPrintLine(p2);
                             printerManager.setPrintFont(
                                     "/system/fonts/DroidSansMono.ttf");
