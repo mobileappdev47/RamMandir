@@ -471,6 +471,7 @@ public class MainActivity extends FlutterActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Log.e("error", "error" + error);
             }
         });
@@ -517,6 +518,7 @@ public class MainActivity extends FlutterActivity {
 //                                        .getJSONArray("body");
                                 JSONObject jsonobject = response
                                         .getJSONObject(0);
+
                                 final POIPrinterManager printerManager = new POIPrinterManager(
                                         getApplicationContext());
                                 printerManager.open();
@@ -705,6 +707,7 @@ public class MainActivity extends FlutterActivity {
 
                     System.out.println("error ----vehicle");
                     Log.e("error", "error" + error);
+                    Log.e("error", "error" + url);
                 }
             });
             queue.add(jsonArrayRequest);
@@ -927,6 +930,7 @@ public class MainActivity extends FlutterActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+
                     Log.e("error", "error" + error);
                 }
             });
