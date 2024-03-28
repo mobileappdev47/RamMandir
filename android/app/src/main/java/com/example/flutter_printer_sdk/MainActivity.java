@@ -209,6 +209,8 @@ public class MainActivity extends FlutterActivity {
                                                 POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                                     @Override
                                                     public void onStart() {
+                                                        System.out.println("printer start-----");
+
                                                     }
 
                                                     @Override
@@ -221,6 +223,8 @@ public class MainActivity extends FlutterActivity {
                                                     public void onError(
                                                             int code,
                                                             String msg) {
+                                                        System.out.println("printer Error-----"+ msg);
+
                                                         Log.e("POIPrinterManager",
                                                                 "code: " + code + "msg: "
                                                                         + msg);
@@ -296,6 +300,8 @@ public class MainActivity extends FlutterActivity {
                                     .getJSONArray("body");
                             JSONObject jsonobject = jsonArray
                                     .getJSONObject(0);
+                            System.out.println("Printer json  onject ____++"+ jsonobject);
+
                             final POIPrinterManager printerManager = new POIPrinterManager(
                                     getApplicationContext());
                             printerManager.open();
@@ -303,7 +309,7 @@ public class MainActivity extends FlutterActivity {
                                     .getPrinterState();
                             Log.d(TAG, "printer state = "
                                     + state);
-
+                            System.out.println("Printer udsdsgufibgv veeehiical ____++");
                             printerManager.setPrintFont(
                                     "/system/fonts/Android-1.ttf");
                             printerManager.setPrintGray(2000);
@@ -437,6 +443,7 @@ public class MainActivity extends FlutterActivity {
                             POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                 @Override
                                 public void onStart() {
+
                                 }
 
                                 @Override
@@ -484,7 +491,7 @@ public class MainActivity extends FlutterActivity {
     public void printTicket(MethodCall call) {
         String typer = call.argument("type").toString().trim();
         if("vehicle".equals(typer) ) {
-
+            System.out.println("TYPE is "+ typer);
             String ticketNo = call.argument("ticketNo").toString();
             String companyId = call.argument("company_Id").toString();
             String locationId = call.argument("locationId").toString();
@@ -517,6 +524,9 @@ public class MainActivity extends FlutterActivity {
 //                                        .getJSONArray("body");
                                 JSONObject jsonobject = response
                                         .getJSONObject(0);
+                                System.out.println("Printer json  onject ____++"+ jsonobject);
+
+
                                 final POIPrinterManager printerManager = new POIPrinterManager(
                                         getApplicationContext());
                                 printerManager.open();
@@ -524,7 +534,6 @@ public class MainActivity extends FlutterActivity {
                                         .getPrinterState();
                                 Log.d(TAG, "printer state = "
                                         + state);
-
 
                                 printerManager.setPrintFont(
                                         "/system/fonts/Android-1.ttf");
@@ -663,14 +672,19 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.setLineSpace(
                                         10);
 
+                                System.out.println("printer before start----");
 
                                 POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                     @Override
                                     public void onStart() {
+                                        System.out.println("printer start-vehicle----");
+
                                     }
 
                                     @Override
                                     public void onFinish() {
+                                        System.out.println("printer end-vehicle----");
+
                                         printerManager.cleanCache();
                                         printerManager.close();
                                     }
@@ -679,6 +693,8 @@ public class MainActivity extends FlutterActivity {
                                     public void onError(
                                             int code,
                                             String msg) {
+                                        System.out.println("printer error-----"+ msg);
+
                                         Log.e("POIPrinterManager",
                                                 "code: " + code + "msg: "
                                                         + msg);
@@ -709,14 +725,10 @@ public class MainActivity extends FlutterActivity {
             });
             queue.add(jsonArrayRequest);
 
-
-
-
-
         }
 
         else {
-
+            System.out.println("TYPE is "+ typer);
             String ticketNo = call.argument("ticketNo").toString();
             String companyId = call.argument("company_Id").toString();
             String locationId = call.argument("locationId").toString();
@@ -729,10 +741,10 @@ public class MainActivity extends FlutterActivity {
             RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
             String url = "https://accountsandtaxminers.com/ShreeRamAyodhyaParking_WebService.asmx/GetCalculateParkingPriceNewDynamic?Ticket_No=" + ticketNo + "&Company_Id=" + companyId +
                     "&LocationName=" + locationId;
+            System.out.println(url);
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET, url, null,
                     new Response.Listener<JSONArray>() {
-
                         @Override
                         public void onResponse(JSONArray response) {
                             try {
@@ -742,16 +754,20 @@ public class MainActivity extends FlutterActivity {
 
 //                                JSONArray jsonArray = response
 //                                        .getJSONArray("body");
+                                System.out.println("Response-----" + response.toString());
                                 JSONObject jsonobject = response
                                         .getJSONObject(0);
                                 final POIPrinterManager printerManager = new POIPrinterManager(
                                         getApplicationContext());
                                 printerManager.open();
+                                System.out.println("Printer udsdsgufibgvdf ____++");
+
                                 int state = printerManager
                                         .getPrinterState();
+
+
                                 Log.d(TAG, "printer state = "
                                         + state);
-
 
                                 printerManager.setPrintFont(
                                         "/system/fonts/Android-1.ttf");
@@ -790,7 +806,8 @@ public class MainActivity extends FlutterActivity {
                                         "",
                                         ticketDate.toString(),
                                         20,
-                                        true);
+                                        true
+                                );
                                 printerManager.addPrintLine(
                                         list5);
                                 List<TextPrintLine> list1 = printList(
@@ -806,7 +823,8 @@ public class MainActivity extends FlutterActivity {
                                         "",
                                         parkingTime.toString(),
                                         20,
-                                        true);
+                                        true
+                                );
                                 printerManager.addPrintLine(
                                         list6);
                                 List<TextPrintLine> list3 = printList(
@@ -894,6 +912,7 @@ public class MainActivity extends FlutterActivity {
                                 POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                     @Override
                                     public void onStart() {
+
                                     }
 
                                     @Override
@@ -918,15 +937,19 @@ public class MainActivity extends FlutterActivity {
                                 }
                                 printerManager.beginPrint(
                                         listener);
-
+                                System.out.println("Response-----" + response.toString());
 
                             } catch (Exception e) {
+                                System.out.println("Eror----ticket" + e.toString());
                                 e.printStackTrace();
                             }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    System.out.println("Eror-response---ticket"+ error.toString() );
+
+
                     Log.e("error", "error" + error);
                 }
             });
