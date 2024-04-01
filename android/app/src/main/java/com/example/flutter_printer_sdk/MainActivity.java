@@ -296,7 +296,6 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
                             JSONArray jsonArray = response
                                     .getJSONArray("body");
                             JSONObject jsonobject = jsonArray
@@ -306,6 +305,7 @@ public class MainActivity extends FlutterActivity {
                             final POIPrinterManager printerManager = new POIPrinterManager(
                                     getApplicationContext());
                             printerManager.open();
+
                             int state = printerManager
                                     .getPrinterState();
                             Log.d(TAG, "printer state = "
@@ -319,9 +319,9 @@ public class MainActivity extends FlutterActivity {
                             String str1 =     jsonobject.getString(
                                     "Location_Name");
                             PrintLine p1 = new TextPrintLine(str1, PrintLine.CENTER,
-                                    30);
+                                    27);
                             printerManager.addPrintLine(p1);
-                            String str2 = jsonobject.getString(
+                            String str2 = "___________________________\n" + jsonobject.getString(
                                     "Middle") + "\n*************";
                             Bitmap bitmap = TexttoImageEncode(
                                     getApplicationContext(),
@@ -356,87 +356,76 @@ public class MainActivity extends FlutterActivity {
                                             "Category_Name"),
                                     24, true);
                             printerManager.addPrintLine(list2);
-                            /*
-                             * String str3 =
-                             * "\nLoss of ticket will be charged as per following";
-                             * PrintLine p3 = new TextPrintLine(str3,
-                             * PrintLine.CENTER, 18);
-                             * printerManager.addPrintLine(p3);
-                             * String str4 = "Bike-Rs.500\n";
-                             * PrintLine p4 = new TextPrintLine(str4,
-                             * PrintLine.CENTER, 18);
-                             * printerManager.addPrintLine(p4);
-                             */
-                            /*
-                             * String str5 =
-                             * "if vehicle is left in parking lot over 24 hours vehicle will be locked/towed. Contact operator for fine charges\n"
-                             * ;
-                             * PrintLine p5 = new TextPrintLine(str5,
-                             * PrintLine.CENTER, 18);
-                             * printerManager.addPrintLine(p5);
-                             */
-                            String str6 =  jsonobject.getString(
-                                    "Email");
-                            PrintLine p6 = new TextPrintLine(str6, PrintLine.CENTER,
-                                    14);
-                            printerManager.addPrintLine(p6);
-                            String str7 = jsonobject.getString(
-                                    "PhoneNo");
-                            PrintLine p7 = new TextPrintLine(str7, PrintLine.CENTER,
-                                    14);
-                            printerManager.addPrintLine(p7);
+                          String str5 = "_______________________";
+                            PrintLine p5 = new TextPrintLine(str5, PrintLine.CENTER,
+                                    27);
+                            printerManager.addPrintLine(p5);
 
+
+
+//                            String str6 =  jsonobject.getString(
+//                                    "Email");
+//                            PrintLine p6 = new TextPrintLine(str6, PrintLine.CENTER,
+//                                    18);
+//                            printerManager.addPrintLine(p6);
+//                            String str7 = jsonobject.getString(
+//                                    "PhoneNo");
+//                            PrintLine p7 = new TextPrintLine(str7, PrintLine.CENTER,
+//                                    18);
+//                            printerManager.addPrintLine(p7);
+                            printerManager.setPrintFont(
+                                    "/system/fonts/DroidSansMono.ttf");
                             String str8 = jsonobject.getString(
                                     "Bottom1");
                             PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p8);
 
                             String str9 = jsonobject.getString(
                                     "Bottom2");
                             PrintLine p9 = new TextPrintLine(str9, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p9);
 
                             String str10 = jsonobject.getString(
                                     "Bottom3");
                             PrintLine p10 = new TextPrintLine(str10, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p10);
 
                             String str11 = jsonobject.getString(
                                     "Bottom4");
                             PrintLine p11 = new TextPrintLine(str11, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p11);
 
                             String str12 = jsonobject.getString(
                                     "Bottom5");
                             PrintLine p12 = new TextPrintLine(str12, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p12);
 
                             String str13 = jsonobject.getString(
                                     "Bottom6");
                             PrintLine p13 = new TextPrintLine(str13, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p13);
 
                             String str14 = jsonobject.getString(
                                     "Bottom7");
                             PrintLine p14 = new TextPrintLine(str14, PrintLine.CENTER,
-                                    14);
+                                    20);
                             printerManager.addPrintLine(p14);
 
 
-                            String str15 = "\n\n\n";
+                            String str15 = "\n";
                             PrintLine p15 = new TextPrintLine(str15, PrintLine.CENTER,
-                                    18);
+                                    20);
                             printerManager.addPrintLine(p15);
-                            String str16 = "                    \n                  \n                 ";
-                            PrintLine p16 = new TextPrintLine(str16, PrintLine.CENTER,
-                                    18);
-                            printerManager.addPrintLine(p16);
+//                            String str16 = "                    \n                  \n                 ";
+//                            PrintLine p16 = new TextPrintLine(str16, PrintLine.CENTER,
+//                                    18);
+//                            printerManager.addPrintLine(p16);
 
                             printerManager.setPrintGray(2000);
                             printerManager.setLineSpace(50);
@@ -561,16 +550,26 @@ public class MainActivity extends FlutterActivity {
                                 PrintLine p1 = new TextPrintLine(
                                         str1,
                                         PrintLine.CENTER,
-                                        30);
+                                        27);
                                 printerManager.addPrintLine(
                                         p1);
-                                String str2 = "Out Ticket";
+                                String str2 = "Out Ticket\n--------------------------------";
                                 PrintLine p2 = new TextPrintLine(
                                         str2,
                                         PrintLine.CENTER,
                                         40);
                                 printerManager.addPrintLine(
                                         p2);
+
+//                                  String str3 = "-----------------------------";
+//                                PrintLine p3 = new TextPrintLine(
+//                                        str3,
+//                                        PrintLine.CENTER,
+//                                        27);
+//
+//                                printerManager.addPrintLine(
+//                                        p3);
+
                                 printerManager.setPrintFont(
                                         "/system/fonts/DroidSansMono.ttf");
                                 // Bitmap bitmap = TexttoImageEncode(
@@ -598,7 +597,7 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.addPrintLine(
                                         list1);
                                 List<TextPrintLine> list6 = printList(
-                                        "Parking_Time: ",
+                                        "Parking Time: ",
                                         "",
                                         parkingTime.toString(),
                                         20,
@@ -614,7 +613,7 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.addPrintLine(
                                         list3);
                                 List<TextPrintLine> list7 = printList(
-                                        "Vehicle_Rate: ",
+                                        "Vehicle Rate: ",
                                         "",
                                         vehicleRate.toString() + "₹",
                                         20,
@@ -629,52 +628,33 @@ public class MainActivity extends FlutterActivity {
                                         true);
                                 printerManager.addPrintLine(
                                         list4);
-                                // List<TextPrintLine> list2 = printList(
-                                // "Ticket Number",
-                                // "",
-                                // call.argument(
-                                // "Ticket_No"),
-                                // 20,
-                                // true);
-                                // printerManager.addPrintLine(
-                                // list2);
-                                // String str3 = "\nLoss
-                                // of ticket will be
-                                // charged as per
-                                // following";
-                                // PrintLine p3 = new
-                                // TextPrintLine(str3,
-                                // PrintLine.CENTER,
-                                // 18);
-                                // printerManager.addPrintLine(p3);
-                                // String str4 =
-                                // "Car-Rs.1000
-                                // Bike-Rs.500\n";
-                                // PrintLine p4 = new
-                                // TextPrintLine(str4,
-                                // PrintLine.CENTER,
-                                // 18);
-                                // printerManager.addPrintLine(p4);
+//                                String str6 = jsonobject.getString(
+//                                        "Email");
+//                                PrintLine p6 = new TextPrintLine(
+//                                        str6,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p6);
+//                                String str7 = jsonobject.getString(
+//                                        "PhoneNo");
+//                                PrintLine p7 = new TextPrintLine(
+//                                        str7,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p7);
+                                String str8 = "_____________________";
+                                PrintLine p8 = new TextPrintLine(
+                                        str8,
+                                        PrintLine.CENTER,
+                                        27);
 
-                                String str6 = jsonobject.getString(
-                                        "Email");
-                                PrintLine p6 = new TextPrintLine(
-                                        str6,
-                                        PrintLine.CENTER,
-                                        15);
                                 printerManager.addPrintLine(
-                                        p6);
-                                String str7 = jsonobject.getString(
-                                        "PhoneNo");
-                                PrintLine p7 = new TextPrintLine(
-                                        str7,
-                                        PrintLine.CENTER,
-                                        15);
-                                printerManager.addPrintLine(
-                                        p7);
-                                String str8 = "                    \n                  \n                 ";
-                                PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER, 18);
-                                printerManager.addPrintLine(p8);
+                                        p8);
+//                                String str8 = "                    \n                  \n                 ";
+//                                PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER, 18);
+//                                printerManager.addPrintLine(p8);
                                 String str5 = "****** Thank You ******\n"
                                         + "                      \n                      \n                      \n";
                                 PrintLine p5 = new TextPrintLine(str5,
@@ -800,16 +780,25 @@ public class MainActivity extends FlutterActivity {
                                 PrintLine p1 = new TextPrintLine(
                                         str1,
                                         PrintLine.CENTER,
-                                        30);
+                                        27);
                                 printerManager.addPrintLine(
                                         p1);
-                                String str2 = "Out Ticket";
+                                String str2 = "Out Ticket\n--------------------------------";
                                 PrintLine p2 = new TextPrintLine(
                                         str2,
                                         PrintLine.CENTER,
                                         40);
                                 printerManager.addPrintLine(
                                         p2);
+
+//                                String str3 = "-----------------------------";
+//                                PrintLine p3 = new TextPrintLine(
+//                                        str3,
+//                                        PrintLine.CENTER,
+//                                        27);
+//
+//                                printerManager.addPrintLine(
+//                                        p3);
                                 printerManager.setPrintFont(
                                         "/system/fonts/DroidSansMono.ttf");
                                 // Bitmap bitmap = TexttoImageEncode(
@@ -871,52 +860,34 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.addPrintLine(
                                         list4);
 
-                                // List<TextPrintLine> list2 = printList(
-                                // "Ticket Number",
-                                // "",
-                                // call.argument(
-                                // "Ticket_No"),
-                                // 20,
-                                // true);
-                                // printerManager.addPrintLine(
-                                // list2);
-                                // String str3 = "\nLoss
-                                // of ticket will be
-                                // charged as per
-                                // following";
-                                // PrintLine p3 = new
-                                // TextPrintLine(str3,
-                                // PrintLine.CENTER,
-                                // 18);
-                                // printerManager.addPrintLine(p3);
-                                // String str4 =
-                                // "Car-Rs.1000
-                                // Bike-Rs.500\n";
-                                // PrintLine p4 = new
-                                // TextPrintLine(str4,
-                                // PrintLine.CENTER,
-                                // 18);
-                                // printerManager.addPrintLine(p4);
+//
+//                                String str6 = jsonobject.getString(
+//                                        "Email");
+//                                PrintLine p6 = new TextPrintLine(
+//                                        str6,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p6);
+//                                String str7 = jsonobject.getString(
+//                                        "PhoneNo");
+//                                PrintLine p7 = new TextPrintLine(
+//                                        str7,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p7);
+                                String str8 = "_____________________";
+                                PrintLine p8 = new TextPrintLine(
+                                        str8,
+                                        PrintLine.CENTER,
+                                        27);
 
-                                String str6 = jsonobject.getString(
-                                        "Email");
-                                PrintLine p6 = new TextPrintLine(
-                                        str6,
-                                        PrintLine.CENTER,
-                                        15);
                                 printerManager.addPrintLine(
-                                        p6);
-                                String str7 = jsonobject.getString(
-                                        "PhoneNo");
-                                PrintLine p7 = new TextPrintLine(
-                                        str7,
-                                        PrintLine.CENTER,
-                                        15);
-                                printerManager.addPrintLine(
-                                        p7);
-                                String str8 = "                    \n                  \n                 ";
-                                PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER, 18);
-                                printerManager.addPrintLine(p8);
+                                        p8);
+//                                String str8 = "                    \n                  \n                 ";
+//                                PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER, 18);
+//                                printerManager.addPrintLine(p8);
                                 String str5 = "****** Thank You ******\n"
                                         + "                      \n                      \n                      \n";
                                 PrintLine p5 = new TextPrintLine(str5,

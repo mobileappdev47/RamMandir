@@ -225,6 +225,7 @@ class _OutTicketState extends State<OutTicket> {
                                         var set =
                                             context.read<GlobalProvider>();
                                         set.clearglobaldata('outticketDetails');
+
                                       }
 
                                       /* if (val.length == 9 &&
@@ -463,6 +464,34 @@ class _OutTicketState extends State<OutTicket> {
                                       ],
                                     )
                                   : const SizedBox(),
+
+                              ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(height: 10,);
+                                },
+                                itemCount: 4,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 13),
+                                  decoration: BoxDecoration(
+                                    color: appBackgroundColor,
+                                    borderRadius: BorderRadius.circular(8),
+
+                                  ),
+                                  height: 55,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                    Text("Vehicle number", style: TextStyle(color: Colors.white,),),
+                                    Text("Vehicle type",style: TextStyle(color: Colors.white,),),
+                                    Text("Vehicle date",style: TextStyle(color: Colors.white,),),
+                                  ],),
+                                );
+                              },
+                              ),
                             ],
                           ),
                         ),
