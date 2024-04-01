@@ -248,6 +248,7 @@ public class MainActivity extends FlutterActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.e("error", "error" + error);
+                                Toast.makeText(MainActivity.this, "API ERROR", Toast.LENGTH_SHORT).show();
                             }
                         });
                         queue.add(jsonArrayRequest);
@@ -443,23 +444,30 @@ public class MainActivity extends FlutterActivity {
                             POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                 @Override
                                 public void onStart() {
-
+                                    System.out.println("Printer start   ____++");
                                 }
 
                                 @Override
                                 public void onFinish() {
+
+                                    System.out.println("Printer finish   ____++");
                                     printerManager.cleanCache();
                                     printerManager.close();
+
                                 }
 
                                 @Override
                                 public void onError(
                                         int code,
                                         String msg) {
+
+                                    System.out.println("Printer error   ____++"+ msg.toString());
+
                                     Log.e("POIPrinterManager",
                                             "code: " + code + "msg: "
                                                     + msg);
                                     printerManager.close();
+
                                 }
                             };
                             if (state == 4) {
@@ -470,14 +478,16 @@ public class MainActivity extends FlutterActivity {
                                     listener);
 
 
-
                         } catch (Exception e) {
+                            System.out.println("Printer exeption   ____++"+ e.toString());
+
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "API ERROR", Toast.LENGTH_SHORT).show();
                 Log.e("error", "error" + error);
             }
         });
@@ -502,10 +512,14 @@ public class MainActivity extends FlutterActivity {
             String vehicleRate = call.argument("Vehicle_Rate").toString();
             String vehicleNo = call.argument("Vehicle_No").toString();
             RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
             String url = "https://accountsandtaxminers.com/ShreeRamAyodhyaParking_WebService.asmx/GetCalculateParkingPriceNewVehicleNoDynamic?Ticket_No="
                     + ticketNo + "&Company_Id=" + companyId +
                     "&LocationName=" + locationId;
             System.out.println(url);
+            System.out.println("vehicle no---->> vehicle "+ vehicleNo);
+            System.out.println("ticket no---->> vehicle "+ ticketNoText);
+
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET, url, null,
                     new Response.Listener<JSONArray>() {
@@ -712,6 +726,7 @@ public class MainActivity extends FlutterActivity {
                             } catch (Exception e) {
                                 Log.e("error -----", e.getMessage());
                                 Log.e("error -----", e.toString());
+                                System.out.println("Printer exeption____++"+e.toString());
                                 e.printStackTrace();
                             }
                         }
@@ -719,8 +734,10 @@ public class MainActivity extends FlutterActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    System.out.println("error ----vehicle");
+                    System.out.println("error exeption----vehicle");
+                    Toast.makeText(MainActivity.this, "API ERROR", Toast.LENGTH_SHORT).show();
                     Log.e("error", "error" + error);
+
                 }
             });
             queue.add(jsonArrayRequest);
@@ -742,6 +759,9 @@ public class MainActivity extends FlutterActivity {
             String url = "https://accountsandtaxminers.com/ShreeRamAyodhyaParking_WebService.asmx/GetCalculateParkingPriceNewDynamic?Ticket_No=" + ticketNo + "&Company_Id=" + companyId +
                     "&LocationName=" + locationId;
             System.out.println(url);
+            System.out.println("vehicle no---->> ticket "+ vehicleNo);
+            System.out.println("ticket no---->> ticket "+ ticketNoText);
+
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                     Request.Method.GET, url, null,
                     new Response.Listener<JSONArray>() {
@@ -754,17 +774,16 @@ public class MainActivity extends FlutterActivity {
 
 //                                JSONArray jsonArray = response
 //                                        .getJSONArray("body");
+
                                 System.out.println("Response-----" + response.toString());
                                 JSONObject jsonobject = response
                                         .getJSONObject(0);
                                 final POIPrinterManager printerManager = new POIPrinterManager(
                                         getApplicationContext());
                                 printerManager.open();
-                                System.out.println("Printer udsdsgufibgvdf ____++");
-
+                                System.out.println("Printer ticket ____++");
                                 int state = printerManager
                                         .getPrinterState();
-
 
                                 Log.d(TAG, "printer state = "
                                         + state);
@@ -851,6 +870,7 @@ public class MainActivity extends FlutterActivity {
                                         true);
                                 printerManager.addPrintLine(
                                         list4);
+
                                 // List<TextPrintLine> list2 = printList(
                                 // "Ticket Number",
                                 // "",
@@ -912,11 +932,12 @@ public class MainActivity extends FlutterActivity {
                                 POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
                                     @Override
                                     public void onStart() {
-
+                                        System.out.println("Printer ticket start____++");
                                     }
 
                                     @Override
                                     public void onFinish() {
+                                        System.out.println("Printer end start ____++");
                                         printerManager.cleanCache();
                                         printerManager.close();
                                     }
@@ -928,6 +949,7 @@ public class MainActivity extends FlutterActivity {
                                         Log.e("POIPrinterManager",
                                                 "code: " + code + "msg: "
                                                         + msg);
+                                        System.out.println("Printer error ticket ____++" + msg.toString());
                                         printerManager.close();
                                     }
                                 };
@@ -941,6 +963,7 @@ public class MainActivity extends FlutterActivity {
 
                             } catch (Exception e) {
                                 System.out.println("Eror----ticket" + e.toString());
+
                                 e.printStackTrace();
                             }
                         }
@@ -949,7 +972,7 @@ public class MainActivity extends FlutterActivity {
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("Eror-response---ticket"+ error.toString() );
 
-
+                    Toast.makeText(MainActivity.this, "API ERROR", Toast.LENGTH_SHORT).show();
                     Log.e("error", "error" + error);
                 }
             });

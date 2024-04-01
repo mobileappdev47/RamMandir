@@ -29,7 +29,7 @@ class _EntrypointState extends State<Entrypoint> {
       Feedback.forTap(context);
       set.setglobaldata('appbarTitle', 'Mall In System');
 
-      Navigator.pushNamed(
+      Navigator.popAndPushNamed(
         context,
         '/loginpage',
       );

@@ -510,8 +510,8 @@ class _OutTicketState extends State<OutTicket> {
                 ticketUpdate(ticketNumber: searchticket.text);
                 getOpen();
                 await channel.invokeMethod(
-                    "outPrint", {
-
+                    "outPrint",
+                    {
                   "data": get.getglobaldata['outticketDetails'],
                   "company_Id": companyNumber,
                   "ticketNo": searchticket.text,

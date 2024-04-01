@@ -17,7 +17,7 @@ String encryptKey = "B@l@j1bh@gw@nk1j@198210080909664";
 //for baseurl
 String paymentUrl = "https://dashboard.easebuzz.in";
 String qrCodeUrl = "https://wire.easebuzz.in";
-String version = "9.0.0";
+String version = "10.0.0";
 
 Future<bool> onWillPop() async {
   return false;

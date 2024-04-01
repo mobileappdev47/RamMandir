@@ -15,6 +15,8 @@ class _LoginpageState extends State<Loginpage> {
         backgroundColor: const Color.fromARGB(231, 250, 249, 246),
         appBar: AppBar(
           // backgroundColor: const Color.fromARGB(231, 250, 249, 246),
+          leading: SizedBox(),
+          backgroundColor: Colors.white,
           elevation: 0,
           /* iconTheme: const IconThemeData(
             color: Colors.blue,
