@@ -52,109 +52,114 @@ class _OutTicketState extends State<OutTicket> {
           return;
         }
       },*/
-      // child:
-      Scaffold(
-          appBar: AppBar(actions: [
-            GestureDetector(
-                onTap: () async {
-                  String serialNo = get.getglobaldata['outControllerId']??'';
-                  print(serialNo);
-                  setState(() {
-                    loaderdata = true;
-                  });
-                  var headers = {'Content-Type': 'application/json'};
-                  var request = http.Request(
-                      'POST', Uri.parse('http://ac.vidaniautomations.com/cmd'));
-                  request.body = json.encode({
-                    // "serialNo": 'vio94e6868fe658',
-                    "serialNo": serialNo,
-                    "cmd": {"type": "control", "id": 1, "key": 1, "value": 1}
-                  });
-                  request.headers.addAll(headers);
+        // child:
+        Scaffold(
+            appBar: AppBar(actions: [
+              GestureDetector(
+                  onTap: () async {
+                    String serialNo =
+                        get.getglobaldata['outControllerId'] ?? '';
+                    print(serialNo);
+                    setState(() {
+                      loaderdata = true;
+                    });
+                    var headers = {'Content-Type': 'application/json'};
+                    var request = http.Request('POST',
+                        Uri.parse('http://ac.vidaniautomations.com/cmd'));
+                    request.body = json.encode({
+                      // "serialNo": 'vio94e6868fe658',
+                      "serialNo": serialNo,
+                      "cmd": {"type": "control", "id": 1, "key": 1, "value": 1}
+                    });
+                    request.headers.addAll(headers);
 
-                  http.StreamedResponse response = await request.send();
-                  if (response.statusCode == 200) {
-                    debugPrint(await response.stream.bytesToString());
-                  } else {
-                    debugPrint(response.reasonPhrase);
-                  }
-                  setState(() {
-                    loaderdata = false;
-                  });
-                },
-                child: const Row(
-                  children: [
-                    Text(
-                      "Gate Open",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.open_in_browser),
-                    )
-                  ],
-                )),
-          ]),
-          drawer: const DrawWidget(),
-          body: Stack(
-            children: [
-              !loaderdata
-                  ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    http.StreamedResponse response = await request.send();
+                    if (response.statusCode == 200) {
+                      debugPrint(await response.stream.bytesToString());
+                    } else {
+                      debugPrint(response.reasonPhrase);
+                    }
+                    setState(() {
+                      loaderdata = false;
+                    });
+                  },
+                  child: const Row(
                     children: [
+                      Text(
+                        "Gate Open",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                       Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(Icons.open_in_browser),
+                      )
+                    ],
+                  )),
+            ]),
+            drawer: const DrawWidget(),
+            body: Stack(
+              children: [
+                !loaderdata
+                    ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          //  maxLength: 6,
-                          // keyboardType: TextInputType.number,
-                            controller: searchticket,
-                            autofocus: true,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: appBackgroundColor),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: appBackgroundColor),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              hintText: "Enter Your Ticket Number",
-                              prefixIcon: const Icon(Icons.numbers),
-                              suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    if (searchticket.text.length >= 11) {
-                                      FocusScope.of(context).unfocus();
-                                      checkOutprintflagDetails(
-                                          ticketNo: searchticket.text);
-                                      Future.delayed(const Duration(
-                                          milliseconds: 300));
-                                    }
-                                  },
-                                  child: const Icon(Icons.search)),
-                            ),
-                            onChanged: (val) {
-                              if (val.length == 11 &&
-                                  searchticket.text.isNotEmpty) {
-                                FocusScope.of(context).unfocus();
-                                checkOutprintflagDetails(
-                                    ticketNo: searchticket.text);
-                                Future.delayed(
-                                    const Duration(milliseconds: 300));
-                              }
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("companyNumber---$companyNumber"),
+                              Text("location---$locationId"),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                    //  maxLength: 6,
+                                    // keyboardType: TextInputType.number,
+                                    controller: searchticket,
+                                    autofocus: true,
+                                    decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: appBackgroundColor),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: appBackgroundColor),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      hintText: "Enter Your Ticket Number",
+                                      prefixIcon: const Icon(Icons.numbers),
+                                      suffixIcon: GestureDetector(
+                                          onTap: () {
+                                            if (searchticket.text.length >=
+                                                11) {
+                                              FocusScope.of(context).unfocus();
+                                              checkOutprintflagDetails(
+                                                  ticketNo: searchticket.text);
+                                              Future.delayed(const Duration(
+                                                  milliseconds: 300));
+                                            }
+                                          },
+                                          child: const Icon(Icons.search)),
+                                    ),
+                                    onChanged: (val) {
+                                      if (val.length == 11 &&
+                                          searchticket.text.isNotEmpty) {
+                                        FocusScope.of(context).unfocus();
+                                        checkOutprintflagDetails(
+                                            ticketNo: searchticket.text);
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300));
+                                      }
 
-                              if(val.length ==0)
-                              {
-                                var set = context.read<GlobalProvider>();
-                                set.clearglobaldata('outticketDetails');
-                              }
-
-                              /* if (val.length == 9 &&
+                                      if (val.length == 0) {
+                                        var set =
+                                            context.read<GlobalProvider>();
+                                        set.clearglobaldata('outticketDetails');
+                                      }
+                                      /* if (val.length == 9 &&
                                         searchticket.text.isNotEmpty) {
                                       FocusScope.of(context).unfocus();
                                       checkOutprintflagDetails(
@@ -169,57 +174,60 @@ class _OutTicketState extends State<OutTicket> {
                                       Future.delayed(
                                           const Duration(milliseconds: 300));
                                     } */
-                            }),
-                      ),
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          //  maxLength: 6,
-                          // keyboardType: TextInputType.number,
-                            controller: searchvehicle,
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: appBackgroundColor),
-                                borderRadius: BorderRadius.circular(20),
+                                    }),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: appBackgroundColor),
-                                borderRadius: BorderRadius.circular(20),
+                              const SizedBox(
+                                height: 10,
                               ),
-                              hintText: "Enter Your Vehicle Number",
-                              prefixIcon: const Icon(Icons.numbers),
-                              suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    if (searchticket.text.length >= 6) {
-                                      FocusScope.of(context).unfocus();
-                                      checkOutprintflagDetails(
-                                          ticketNo: searchticket.text);
-                                      Future.delayed(const Duration(
-                                          milliseconds: 300));
-                                    }
-                                  },
-                                  child: const Icon(Icons.search)),
-                            ),
-                            onChanged: (val) {
-                              if (val.length == 6 &&
-                                  searchvehicle.text.isNotEmpty) {
-                                FocusScope.of(context).unfocus();
-                                newAPi(
-                                    vehicleNo: searchvehicle.text);
-                                Future.delayed(
-                                    const Duration(milliseconds: 300));
-                              }
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                    //  maxLength: 6,
+                                    // keyboardType: TextInputType.number,
+                                    controller: searchvehicle,
+                                    decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: appBackgroundColor),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 2,
+                                            color: appBackgroundColor),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      hintText: "Enter Your Vehicle Number",
+                                      prefixIcon: const Icon(Icons.numbers),
+                                      suffixIcon: GestureDetector(
+                                          onTap: () {
+                                            if (searchticket.text.length >= 6) {
+                                              FocusScope.of(context).unfocus();
+                                              checkOutprintflagDetails(
+                                                  ticketNo: searchticket.text);
+                                              Future.delayed(const Duration(
+                                                  milliseconds: 300));
+                                            }
+                                          },
+                                          child: const Icon(Icons.search)),
+                                    ),
+                                    onChanged: (val) {
+                                      if (val.length == 6 &&
+                                          searchvehicle.text.isNotEmpty) {
+                                        FocusScope.of(context).unfocus();
+                                        newAPi(vehicleNo: searchvehicle.text);
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300));
+                                      }
 
-                              if(val.length ==0)
-                              {
-                                var set = context.read<GlobalProvider>();
-                                set.clearglobaldata('outticketDetails');
-                              }
+                                      if (val.length == 0) {
+                                        var set =
+                                            context.read<GlobalProvider>();
+                                        set.clearglobaldata('outticketDetails');
+                                      }
 
-                              /* if (val.length == 9 &&
+                                      /* if (val.length == 9 &&
                                         searchticket.text.isNotEmpty) {
                                       FocusScope.of(context).unfocus();
                                       checkOutprintflagDetails(
@@ -234,324 +242,365 @@ class _OutTicketState extends State<OutTicket> {
                                       Future.delayed(
                                           const Duration(milliseconds: 300));
                                     } */
-                            }),
-                      ),
-                      get.getglobaldata['outticketDetails'] != null&&  get.getglobaldata['outticketDetails'].length !=0 && get.getglobaldata['outticketDetails'].isNotEmpty
-                          ? Column(
-                        children: [
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Ticket Number",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Ticket_No']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Parking Time",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Parking_Time']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              padding: const EdgeInsets.all(12),
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(20),
-                                color: appBackgroundColor,
+                                    }),
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Category Name",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Category_Name']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Vehicle Number",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Vehicle_No']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              padding: const EdgeInsets.all(12),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Vehicle Rate",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    "${get.getglobaldata['outticketDetails']['Vehicle_Rate']}₹",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Ticket_Date",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Ticket_Date']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
-                          Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  color: appBackgroundColor,
-                                  borderRadius:
-                                  BorderRadius.circular(20)),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Out date",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  Text(
-                                    get.getglobaldata[
-                                    'outticketDetails']
-                                    ['Out_date']
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  )
-                                ],
-                              )),
+                              get.getglobaldata['outticketDetails'] != null &&
+                                      get.getglobaldata['outticketDetails']
+                                              .length !=
+                                          0 &&
+                                      get.getglobaldata['outticketDetails']
+                                          .isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            padding: const EdgeInsets.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Ticket Number",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Ticket_No']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            padding: const EdgeInsets.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Parking Time",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Parking_Time']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            padding: const EdgeInsets.all(12),
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: appBackgroundColor,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Category Name",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Category_Name']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            padding: const EdgeInsets.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Vehicle Number",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Vehicle_No']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            padding: const EdgeInsets.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Vehicle Rate",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  "${get.getglobaldata['outticketDetails']['Vehicle_Rate']}₹",
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Ticket_Date",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Ticket_Date']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                              ],
+                                            )),
+                                        Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                                color: appBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Out date",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                ),
+                                                Text(
+                                                  get.getglobaldata[
+                                                          'outticketDetails']
+                                                          ['Out_date']
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18),
+                                                )
+                                              ],
+                                            )),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                        ),
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+                checkticketprint
+                    ? AlertDialog(
+                        backgroundColor: appBackgroundColor,
+                        surfaceTintColor: appBackgroundColor,
+                        title: const Text(
+                          'Ticket is already out',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text('Okay',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              setState(() {
+                                checkticketprint = false;
+                              });
+                            },
+                          ),
                         ],
                       )
-                          : const SizedBox(),
-                    ],
-                  ),
-                ),
-              )
-                  : const Center(child: CircularProgressIndicator()),
-              checkticketprint
-                  ? AlertDialog(
-                backgroundColor: appBackgroundColor,
-                surfaceTintColor: appBackgroundColor,
-                title: const Text(
-                  'Ticket is already out',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    child: const Text('Okay',
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      setState(() {
-                        checkticketprint = false;
-                      });
-                    },
-                  ),
-                ],
-              )
-                  : const SizedBox(),
-              checkVehicleprint? AlertDialog(
-                backgroundColor: appBackgroundColor,
-                surfaceTintColor: appBackgroundColor,
-                title: const Text(
-                  'Vehicle is already out',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    child: const Text('Okay',
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      setState(() {
-                        checkVehicleprint = false;
-                      });
-                    },
-                  ),
-                ],
-              ): SizedBox(),
-            ],
-          ),
-          floatingActionButton:  get.getglobaldata['outticketDetails'] != null&&  get.getglobaldata['outticketDetails'].length !=0 && get.getglobaldata['outticketDetails'].isNotEmpty
+                    : const SizedBox(),
+                checkVehicleprint
+                    ? AlertDialog(
+                        backgroundColor: appBackgroundColor,
+                        surfaceTintColor: appBackgroundColor,
+                        title: const Text(
+                          'Vehicle is already out',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            child: const Text('Okay',
+                                style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              setState(() {
+                                checkVehicleprint = false;
+                              });
+                            },
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
+              ],
+            ),
+            floatingActionButton: get.getglobaldata['outticketDetails'] !=
+                        null &&
+                    get.getglobaldata['outticketDetails'].length != 0 &&
+                    get.getglobaldata['outticketDetails'].isNotEmpty
+                ? (searchticket.text != '')
+                    ? FloatingActionButton.small(
+                        backgroundColor: appBackgroundColor,
+                        onPressed: () async {
+                           ticketUpdate(ticketNumber: searchticket.text);
+                          await channel.invokeMethod("outPrint", {
+                            "data": get.getglobaldata['outticketDetails'],
+                            "company_Id": companyNumber,
+                            "ticketNo": searchticket.text,
+                            "locationId": locationId,
+                            "type": "ticket",
+                            "Ticket_Date": get.getglobaldata['outticketDetails']
+                            ['Ticket_Date']
+                                .toString(),
+                            "Out_date": get.getglobaldata['outticketDetails']
+                            ['Out_date']
+                                .toString(),
+                            "Parking_Time": get
+                                .getglobaldata['outticketDetails']
+                            ['Parking_Time']
+                                .toString(),
+                            "Ticket_No": get.getglobaldata['outticketDetails']
+                            ['Ticket_No']
+                                .toString(),
+                            "Vehicle_Rate": get
+                                .getglobaldata['outticketDetails']
+                            ['Vehicle_Rate']
+                                .toString(),
+                            "Vehicle_No": get.getglobaldata['outticketDetails']
+                            ['Vehicle_No']
+                                .toString(),
+                          });
 
-              ? (searchticket.text !='')?FloatingActionButton.small(
-              backgroundColor: appBackgroundColor,
-              onPressed: () async {
-                ticketUpdate(ticketNumber: searchticket.text);
-                getOpen();
-                await channel.invokeMethod(
-                    "outPrint",
-                    {
-                  "data": get.getglobaldata['outticketDetails'],
-                  "company_Id": companyNumber,
-                  "ticketNo": searchticket.text,
-                  "locationId":locationId,
-                  "type":"ticket",
-                  "Ticket_Date": get.getglobaldata['outticketDetails']['Ticket_Date'].toString(),
-                  "Out_date":  get.getglobaldata['outticketDetails']['Out_date'].toString(),
-                  "Parking_Time": get.getglobaldata['outticketDetails']['Parking_Time'].toString(),
-                  "Ticket_No":get.getglobaldata['outticketDetails']['Ticket_No'].toString(),
-                  "Vehicle_Rate":get.getglobaldata['outticketDetails']['Vehicle_Rate'].toString(),
-                  "Vehicle_No": get.getglobaldata['outticketDetails']['Vehicle_No'].toString(),
-                }
-                );
-              },
-              child: const Icon(Icons.print, color: Colors.white))
-              :FloatingActionButton.small(
-              backgroundColor: appBackgroundColor,
-              onPressed: () async {
-                ticketUpdateVehicle(vehicleNumber: searchvehicle.text);
-                getOpen();
-                await channel.invokeMethod(
-                    "outPrint",{
+                           getOpen();
+                        },
+                        child: const Icon(Icons.print, color: Colors.white))
+                    : FloatingActionButton.small(
+                        backgroundColor: appBackgroundColor,
+                        onPressed: () async {
+                           ticketUpdateVehicle(
+                              vehicleNumber: searchvehicle.text);
+                          await channel.invokeMethod("outPrint", {
+                            "data": get.getglobaldata['outticketDetails'],
+                            "company_Id": companyNumber,
+                            "ticketNo": searchvehicle.text,
+                            "locationId": locationId,
+                            "type": "vehicle",
+                            "Ticket_Date": get.getglobaldata['outticketDetails']
+                            ['Ticket_Date']
+                                .toString(),
+                            "Out_date": get.getglobaldata['outticketDetails']
+                            ['Out_date']
+                                .toString(),
+                            "Parking_Time": get
+                                .getglobaldata['outticketDetails']
+                            ['Parking_Time']
+                                .toString(),
+                            "Ticket_No": get.getglobaldata['outticketDetails']
+                            ['Ticket_No']
+                                .toString(),
+                            "Vehicle_Rate": get
+                                .getglobaldata['outticketDetails']
+                            ['Vehicle_Rate']
+                                .toString(),
+                            "Vehicle_No": get.getglobaldata['outticketDetails']
+                            ['Vehicle_No']
+                                .toString(),
+                          });
+                           getOpen();
 
-                  "data":get.getglobaldata['outticketDetails'],
-                  "company_Id" :companyNumber,
-                  "ticketNo": searchvehicle.text,
-                  "locationId":locationId,
-                  "type":"vehicle",
-                  "Ticket_Date": get.getglobaldata['outticketDetails']['Ticket_Date'].toString(),
-                  "Out_date":  get.getglobaldata['outticketDetails']['Out_date'].toString(),
-                  "Parking_Time": get.getglobaldata['outticketDetails']['Parking_Time'].toString(),
-                  "Ticket_No":get.getglobaldata['outticketDetails']['Ticket_No'].toString(),
-                  "Vehicle_Rate":get.getglobaldata['outticketDetails']['Vehicle_Rate'].toString(),
-                  "Vehicle_No": get.getglobaldata['outticketDetails']['Vehicle_No'].toString(),
-                }
-                );
-              },
-              child: const Icon(Icons.print, color: Colors.white))
-              : const SizedBox()
-      );
+                        },
+                        child: const Icon(Icons.print, color: Colors.white))
+                : const SizedBox());
   }
 
   Future<void> checkOutprintflagDetails({required String ticketNo}) async {
@@ -583,7 +632,7 @@ class _OutTicketState extends State<OutTicket> {
     if (reponse.statusCode == 200) {
       var data = jsonDecode(reponse.body);
       if (data['status'].toString() == '0') {
-        await    newSendOutdate();
+        await newSendOutdate();
         // if(data['Message']=='Failure'){
         //   searchvehicle.clear();
         //   setState(() {
@@ -592,7 +641,6 @@ class _OutTicketState extends State<OutTicket> {
         //   if (mounted) FocusScope.of(context).requestFocus(firstFocus);
         // }
       } else {
-
         searchvehicle.clear();
         setState(() {
           checkVehicleprint = true;
@@ -601,7 +649,6 @@ class _OutTicketState extends State<OutTicket> {
       }
     }
   }
-
 
   Future<void> ticketUpdate({required String ticketNumber}) async {
     var set = context.read<GlobalProvider>();
@@ -617,6 +664,7 @@ class _OutTicketState extends State<OutTicket> {
       if (mounted) FocusScope.of(context).requestFocus(firstFocus);
     }
   }
+
   Future<void> ticketUpdateVehicle({required String vehicleNumber}) async {
     var set = context.read<GlobalProvider>();
     var get = Provider.of<GlobalProvider>(context, listen: false);
@@ -647,25 +695,34 @@ class _OutTicketState extends State<OutTicket> {
       var data = jsonDecode(response.body);
       if (data['status'] == "0") {
         setState(() {
-
           isavaible = false;
 
-          showDialog(context: context, builder: (context){
-            return  AlertDialog(
-              content: const Text("Ticket no/Vehicle no not found",style: TextStyle(fontSize: 16),),
-              actions: [
-                ElevatedButton(onPressed: (){
-                  loaderdata = false;
-                  var set = context.read<GlobalProvider>();
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: const Text(
+                    "Ticket no/Vehicle no not found",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        loaderdata = false;
+                        var set = context.read<GlobalProvider>();
 
-                  set.clearglobaldata('outticketDetails');
-                  setState(() {
-
-                  });
-                  Navigator.of(context).pop();
-                }, child: Text("OK",style: TextStyle(fontSize: 12,color: yellow),),)
-              ],
-            );});
+                        set.clearglobaldata('outticketDetails');
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "OK",
+                        style: TextStyle(fontSize: 12, color: yellow),
+                      ),
+                    )
+                  ],
+                );
+              });
         });
       } else {
         setState(() {
@@ -676,6 +733,7 @@ class _OutTicketState extends State<OutTicket> {
       }
     }
   }
+
   Future<void> newSendOutdate() async {
     setState(() {
       loaderdata = true;
@@ -691,25 +749,34 @@ class _OutTicketState extends State<OutTicket> {
       var data = jsonDecode(response.body);
       if (data['status'] == "0") {
         setState(() {
-
           isavaible = false;
 
-          showDialog(context: context, builder: (context){
-            return  AlertDialog(
-              content: const Text("Vehicle no not found",style: TextStyle(fontSize: 16),),
-              actions: [
-                ElevatedButton(onPressed: (){
-                  loaderdata = false;
-                  var set = context.read<GlobalProvider>();
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: const Text(
+                    "Vehicle no not found",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        loaderdata = false;
+                        var set = context.read<GlobalProvider>();
 
-                  set.clearglobaldata('outticketDetails');
-                  setState(() {
-
-                  });
-                  Navigator.of(context).pop();
-                }, child: Text("OK",style: TextStyle(fontSize: 12,color: yellow),),)
-              ],
-            );});
+                        set.clearglobaldata('outticketDetails');
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "OK",
+                        style: TextStyle(fontSize: 12, color: yellow),
+                      ),
+                    )
+                  ],
+                );
+              });
         });
       } else {
         setState(() {
@@ -720,6 +787,7 @@ class _OutTicketState extends State<OutTicket> {
       }
     }
   }
+
   Future<void> newGetOuterticket() async {
     var set = context.read<GlobalProvider>();
     var get = Provider.of<GlobalProvider>(context, listen: false);
@@ -734,8 +802,10 @@ class _OutTicketState extends State<OutTicket> {
     //   set.setglobaldata('outticketDetails', ticketNo[0]);
     // }
 
-    var request = http.Request('GET', Uri.parse('$baseUrl1/GetCalculateParkingPriceNewVehicleNo?Ticket_No=$vehicleNO&Company_Id=$companyNumber&LocationName=$locationId'));
-
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '$baseUrl1/GetCalculateParkingPriceNewVehicleNo?Ticket_No=$vehicleNO&Company_Id=$companyNumber&LocationName=$locationId'));
 
     http.StreamedResponse response = await request.send();
 
@@ -744,22 +814,18 @@ class _OutTicketState extends State<OutTicket> {
       var ticketNo = jsonDecode(data);
       set.setglobaldata('outticketDetails', ticketNo[0]);
 
-
-      if(get.getglobaldata['outticketDetails'] != null&&  get.getglobaldata['outticketDetails'].length !=0 && get.getglobaldata['outticketDetails'].isNotEmpty){
+      if (get.getglobaldata['outticketDetails'] != null &&
+          get.getglobaldata['outticketDetails'].length != 0 &&
+          get.getglobaldata['outticketDetails'].isNotEmpty) {
         print('data is there');
-
-      }
-      else {
-
+      } else {
         searchvehicle.clear();
         setState(() {
           checkVehicleprint = true;
         });
         if (mounted) FocusScope.of(context).requestFocus(firstFocus);
       }
-
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
 
@@ -782,8 +848,10 @@ class _OutTicketState extends State<OutTicket> {
     //   set.setglobaldata('outticketDetails', ticketNo[0]);
     // }
 
-    var request = http.Request('GET', Uri.parse('$baseUrl1/GetCalculateParkingPriceNew?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'));
-
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '$baseUrl1/GetCalculateParkingPriceNew?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'));
 
     http.StreamedResponse response = await request.send();
 
@@ -791,8 +859,7 @@ class _OutTicketState extends State<OutTicket> {
       var data = (await response.stream.bytesToString());
       var ticketNo = jsonDecode(data);
       set.setglobaldata('outticketDetails', ticketNo[0]);
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
 
@@ -805,11 +872,12 @@ class _OutTicketState extends State<OutTicket> {
     var get = Provider.of<GlobalProvider>(context, listen: false);
     var headers = {'Content-Type': 'application/json'};
     var request =
-    http.Request('POST', Uri.parse('http://ac.vidaniautomations.com/cmd'));
+        http.Request('POST', Uri.parse('http://ac.vidaniautomations.com/cmd'));
     request.body = json.encode({
       "serialNo": get.getglobaldata['outControllerId'],
       "cmd": {"type": "control", "id": 1, "key": 1, "value": 1}
-    });
+      }
+    );
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
