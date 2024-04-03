@@ -30,7 +30,9 @@ class _OutTicketState extends State<OutTicket> {
   bool checkticketprint = false;
   bool checkVehicleprint = false;
   bool isavaible = true;
+  String passTicketNo= '';
 
+List vehicleList = [];
   @override
   void initState() {
     var set = context.read<GlobalProvider>();
@@ -43,6 +45,8 @@ class _OutTicketState extends State<OutTicket> {
   Widget build(BuildContext context) {
     var get = context.watch<GlobalProvider>();
     String companyNumber = get.getglobaldata['companyNumber'];
+    String sNo =
+        get.getglobaldata['outControllerId'] ?? '';
     String deviceId = get.getglobaldata['uniqueId'] ?? '';
     String locationId = get.getglobaldata['locationid'].toString() ?? '';
     return /*PopScope(
@@ -107,8 +111,10 @@ class _OutTicketState extends State<OutTicket> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("companyNumber---$companyNumber"),
-                              Text("location---$locationId"),
+                              // Text("companyNumber---$companyNumber"),
+                              // Text("sNo---$sNo"),
+                              // Text("location---$locationId"),
+                              // Text("ticketnumber ---${searchticket.text}"),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
@@ -133,6 +139,10 @@ class _OutTicketState extends State<OutTicket> {
                                       prefixIcon: const Icon(Icons.numbers),
                                       suffixIcon: GestureDetector(
                                           onTap: () {
+                                            // passTicketNo = searchticket.text;
+                                            // setState(() {
+                                            //
+                                            // });
                                             if (searchticket.text.length >=
                                                 11) {
                                               FocusScope.of(context).unfocus();
@@ -145,6 +155,10 @@ class _OutTicketState extends State<OutTicket> {
                                           child: const Icon(Icons.search)),
                                     ),
                                     onChanged: (val) {
+//                                       passTicketNo = val;
+// setState(() {
+//
+// });
                                       if (val.length == 11 &&
                                           searchticket.text.isNotEmpty) {
                                         FocusScope.of(context).unfocus();
@@ -202,12 +216,33 @@ class _OutTicketState extends State<OutTicket> {
                                       prefixIcon: const Icon(Icons.numbers),
                                       suffixIcon: GestureDetector(
                                           onTap: () {
-                                            if (searchticket.text.length >= 6) {
+                                            // if (searchticket.text.length >= 6) {
+                                            //   FocusScope.of(context).unfocus();
+                                            //   checkOutprintflagDetails(
+                                            //       ticketNo: searchticket.text);
+                                            //   Future.delayed(const Duration(
+                                            //       milliseconds: 300));
+                                            // }
+                                            if (searchvehicle.text.length == 6 &&
+                                                searchvehicle.text.isNotEmpty) {
+                                              var set =
+                                              context.read<GlobalProvider>();
                                               FocusScope.of(context).unfocus();
-                                              checkOutprintflagDetails(
-                                                  ticketNo: searchticket.text);
-                                              Future.delayed(const Duration(
-                                                  milliseconds: 300));
+
+                                              set.clearglobaldata('outticketDetails');
+                                              setState(() {
+
+                                              });
+                                              getVehicleNOApi(vehicleNo: searchvehicle.text );
+                                              // newAPi(vehicleNo: searchvehicle.text);
+                                              // Future.delayed(
+                                              //     const Duration(milliseconds: 300));
+                                            }
+
+                                            if (searchvehicle.text.isEmpty) {
+                                              var set =
+                                              context.read<GlobalProvider>();
+                                              set.clearglobaldata('outticketDetails');
                                             }
                                           },
                                           child: const Icon(Icons.search)),
@@ -215,17 +250,24 @@ class _OutTicketState extends State<OutTicket> {
                                     onChanged: (val) {
                                       if (val.length == 6 &&
                                           searchvehicle.text.isNotEmpty) {
+                                        var set =
+                                        context.read<GlobalProvider>();
                                         FocusScope.of(context).unfocus();
-                                        newAPi(vehicleNo: searchvehicle.text);
-                                        Future.delayed(
-                                            const Duration(milliseconds: 300));
+
+                                        set.clearglobaldata('outticketDetails');
+                                     setState(() {
+
+                                     });
+                                        getVehicleNOApi(vehicleNo: searchvehicle.text );
+                                        // newAPi(vehicleNo: searchvehicle.text);
+                                        // Future.delayed(
+                                        //     const Duration(milliseconds: 300));
                                       }
 
                                       if (val.length == 0) {
                                         var set =
                                             context.read<GlobalProvider>();
                                         set.clearglobaldata('outticketDetails');
-
                                       }
 
                                       /* if (val.length == 9 &&
@@ -464,34 +506,131 @@ class _OutTicketState extends State<OutTicket> {
                                       ],
                                     )
                                   : const SizedBox(),
-
+                           (   get.getglobaldata['outticketDetails'] ==
+                                  null ||
+                                  get.getglobaldata['outticketDetails'].length == 0 ||
+                                  get.getglobaldata['outticketDetails'].isEmpty) && searchvehicle.text.isNotEmpty ?
                               ListView.separated(
                                 separatorBuilder: (context, index) {
-                                  return SizedBox(height: 10,);
+                                  return SizedBox(
+                                    height: 10,
+                                  );
                                 },
-                                itemCount: 4,
+                                itemCount: vehicleList.length,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 13),
-                                  decoration: BoxDecoration(
-                                    color: appBackgroundColor,
-                                    borderRadius: BorderRadius.circular(8),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        searchticket.text = vehicleList[index]['Ticket_No'];
+                                      });
+                                      // passTicketNo= vehicleList[index]['Ticket_No'];
+                                      // setState(() {
+                                      //
+                                      // });
+                                      checkOutprintflagDetails(ticketNo: vehicleList[index]['Ticket_No']??'');
+                                      Future.delayed(
+                                          const Duration(milliseconds: 300));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 13, vertical: 13),
+                                      decoration: BoxDecoration(
+                                        color: appBackgroundColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Vehicle number:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                vehicleList[index]['Vehicle_No']??'',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
 
-                                  ),
-                                  height: 55,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                    Text("Vehicle number", style: TextStyle(color: Colors.white,),),
-                                    Text("Vehicle type",style: TextStyle(color: Colors.white,),),
-                                    Text("Vehicle date",style: TextStyle(color: Colors.white,),),
-                                  ],),
-                                );
-                              },
-                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Vehicle Type",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                vehicleList[index]['Category_Name']??'',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Date:",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                vehicleList[index]['Ticket_Date'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "TicketNo",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Text(
+                                                vehicleList[index]['Ticket_No'],
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ) : SizedBox(),
                             ],
                           ),
                         ),
@@ -557,11 +696,13 @@ class _OutTicketState extends State<OutTicket> {
                         null &&
                     get.getglobaldata['outticketDetails'].length != 0 &&
                     get.getglobaldata['outticketDetails'].isNotEmpty
-                ? (searchticket.text != '')
-                    ? FloatingActionButton.small(
+                ?
+            // (searchticket.text != ''&& searchticket.text.isNotEmpty)
+            //         ?
+            FloatingActionButton.small(
                         backgroundColor: appBackgroundColor,
                         onPressed: () async {
-                           ticketUpdate(ticketNumber: searchticket.text);
+                          ticketUpdate(ticketNumber: searchticket.text);
                           await channel.invokeMethod("outPrint", {
                             "data": get.getglobaldata['outticketDetails'],
                             "company_Id": companyNumber,
@@ -569,69 +710,129 @@ class _OutTicketState extends State<OutTicket> {
                             "locationId": locationId,
                             "type": "ticket",
                             "Ticket_Date": get.getglobaldata['outticketDetails']
-                            ['Ticket_Date']
+                                    ['Ticket_Date']
                                 .toString(),
                             "Out_date": get.getglobaldata['outticketDetails']
-                            ['Out_date']
+                                    ['Out_date']
                                 .toString(),
                             "Parking_Time": get
                                 .getglobaldata['outticketDetails']
-                            ['Parking_Time']
+                                    ['Parking_Time']
                                 .toString(),
                             "Ticket_No": get.getglobaldata['outticketDetails']
-                            ['Ticket_No']
+                                    ['Ticket_No']
                                 .toString(),
                             "Vehicle_Rate": get
                                 .getglobaldata['outticketDetails']
-                            ['Vehicle_Rate']
+                                    ['Vehicle_Rate']
                                 .toString(),
                             "Vehicle_No": get.getglobaldata['outticketDetails']
-                            ['Vehicle_No']
+                                    ['Vehicle_No']
                                 .toString(),
                           });
 
-                           getOpen();
+                          getOpen();
                         },
                         child: const Icon(Icons.print, color: Colors.white))
-                    : FloatingActionButton.small(
-                        backgroundColor: appBackgroundColor,
-                        onPressed: () async {
-                           ticketUpdateVehicle(
-                              vehicleNumber: searchvehicle.text);
-                          await channel.invokeMethod("outPrint", {
-                            "data": get.getglobaldata['outticketDetails'],
-                            "company_Id": companyNumber,
-                            "ticketNo": searchvehicle.text,
-                            "locationId": locationId,
-                            "type": "vehicle",
-                            "Ticket_Date": get.getglobaldata['outticketDetails']
-                            ['Ticket_Date']
-                                .toString(),
-                            "Out_date": get.getglobaldata['outticketDetails']
-                            ['Out_date']
-                                .toString(),
-                            "Parking_Time": get
-                                .getglobaldata['outticketDetails']
-                            ['Parking_Time']
-                                .toString(),
-                            "Ticket_No": get.getglobaldata['outticketDetails']
-                            ['Ticket_No']
-                                .toString(),
-                            "Vehicle_Rate": get
-                                .getglobaldata['outticketDetails']
-                            ['Vehicle_Rate']
-                                .toString(),
-                            "Vehicle_No": get.getglobaldata['outticketDetails']
-                            ['Vehicle_No']
-                                .toString(),
-                          });
-                           getOpen();
-
-                        },
-                        child: const Icon(Icons.print, color: Colors.white))
+            //         :
+            // FloatingActionButton.small(
+            //             backgroundColor: appBackgroundColor,
+            //             onPressed: () async {
+            //               print(passTicketNo);
+            //               // ticketUpdateVehicle(
+            //               //     vehicleNumber: searchvehicle.text);
+            //               // await channel.invokeMethod("outPrint", {
+            //               //   "data": get.getglobaldata['outticketDetails'],
+            //               //   "company_Id": companyNumber,
+            //               //   "ticketNo": searchvehicle.text,
+            //               //   "locationId": locationId,
+            //               //   "type": "vehicle",
+            //               //   "Ticket_Date": get.getglobaldata['outticketDetails']
+            //               //           ['Ticket_Date']
+            //               //       .toString(),
+            //               //   "Out_date": get.getglobaldata['outticketDetails']
+            //               //           ['Out_date']
+            //               //       .toString(),
+            //               //   "Parking_Time": get
+            //               //       .getglobaldata['outticketDetails']
+            //               //           ['Parking_Time']
+            //               //       .toString(),
+            //               //   "Ticket_No": get.getglobaldata['outticketDetails']
+            //               //           ['Ticket_No']
+            //               //       .toString(),
+            //               //   "Vehicle_Rate": get
+            //               //       .getglobaldata['outticketDetails']
+            //               //           ['Vehicle_Rate']
+            //               //       .toString(),
+            //               //   "Vehicle_No": get.getglobaldata['outticketDetails']
+            //               //           ['Vehicle_No']
+            //               //       .toString(),
+            //               // });
+            //               // getOpen();
+            //               ticketUpdate(ticketNumber: passTicketNo);
+            //               await channel.invokeMethod("outPrint", {
+            //                 "data": get.getglobaldata['outticketDetails'],
+            //                 "company_Id": companyNumber,
+            //                 "ticketNo":passTicketNo,
+            //                 "locationId": locationId,
+            //                 "type": "ticket",
+            //                 "Ticket_Date": get.getglobaldata['outticketDetails']
+            //                 ['Ticket_Date']
+            //                     .toString(),
+            //                 "Out_date": get.getglobaldata['outticketDetails']
+            //                 ['Out_date']
+            //                     .toString(),
+            //                 "Parking_Time": get
+            //                     .getglobaldata['outticketDetails']
+            //                 ['Parking_Time']
+            //                     .toString(),
+            //                 "Ticket_No": get.getglobaldata['outticketDetails']
+            //                 ['Ticket_No']
+            //                     .toString(),
+            //                 "Vehicle_Rate": get
+            //                     .getglobaldata['outticketDetails']
+            //                 ['Vehicle_Rate']
+            //                     .toString(),
+            //                 "Vehicle_No": get.getglobaldata['outticketDetails']
+            //                 ['Vehicle_No']
+            //                     .toString(),
+            //               });
+            //
+            //               getOpen();
+            //             },
+            //             child: const Icon(Icons.print, color: Colors.white))
                 : const SizedBox());
   }
+  Future<void> getVehicleNOApi({required String vehicleNo}) async {
 
+    var get = Provider.of<GlobalProvider>(context, listen: false);
+    String companyNumber = get.getglobaldata['companyNumber'];
+    String locationId = get.getglobaldata['locationid'].toString() ?? '';
+    loaderdata = true ;
+    setState(() {
+
+    });
+    var reponse = await http.get(Uri.parse(
+        '$baseUrl1/GetVehicleNo?Ticket_No=$vehicleNo&Company_Id=$companyNumber&LocationName=$locationId'));
+
+    if (reponse.statusCode == 200) {
+      var data = jsonDecode(reponse.body);
+      if (data['status'].toString() == '1') {
+
+        vehicleList=data['body'];
+        setState(() {
+
+        });
+      } else {
+        vehicleList.clear();
+        if (mounted) FocusScope.of(context).requestFocus(firstFocus);
+      }
+    }
+    loaderdata = false ;
+    setState(() {
+
+    });
+  }
   Future<void> checkOutprintflagDetails({required String ticketNo}) async {
     var get = Provider.of<GlobalProvider>(context, listen: false);
     String companyNumber = get.getglobaldata['companyNumber'];
@@ -642,6 +843,28 @@ class _OutTicketState extends State<OutTicket> {
       var data = jsonDecode(reponse.body);
       if (data['status'].toString() == '0') {
         sendOutdate();
+      } else
+      {
+        searchticket.clear();
+        setState(() {
+          checkticketprint = true;
+        });
+        if (mounted) FocusScope.of(context).requestFocus(firstFocus);
+      }
+    }
+  }
+
+
+  Future<void> checkOutprintflagDetailsForVehicle({required String ticketNo}) async {
+    var get = Provider.of<GlobalProvider>(context, listen: false);
+    String companyNumber = get.getglobaldata['companyNumber'];
+    var reponse = await http.get(Uri.parse(
+        '$baseUrl1/getCheckOutprintflagDetails?Ticket_No=$ticketNo&Company_Id=$companyNumber'));
+
+    if (reponse.statusCode == 200) {
+      var data = jsonDecode(reponse.body);
+      if (data['status'].toString() == '0') {
+        sendOutdateVehicleNO(ticketNo);
       } else {
         searchticket.clear();
         setState(() {
@@ -651,6 +874,7 @@ class _OutTicketState extends State<OutTicket> {
       }
     }
   }
+
 
   Future<void> newAPi({required String vehicleNo}) async {
     var get = Provider.of<GlobalProvider>(context, listen: false);
@@ -762,7 +986,59 @@ class _OutTicketState extends State<OutTicket> {
       }
     }
   }
+  Future<void> sendOutdateVehicleNO(ticketNo) async {
+    setState(() {
+      loaderdata = true;
+    });
 
+    var get = Provider.of<GlobalProvider>(context, listen: false);
+    String companyNumber = get.getglobaldata['companyNumber'];
+    var response = await http.get(
+      Uri.parse(
+          '$baseUrl1/UpdateTicketOutDate?Ticket_No=$ticketNo&Out_Date=$datenow&paymentMode=cash&Company_Id=$companyNumber'),
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      if (data['status'] == "0") {
+        setState(() {
+          isavaible = false;
+
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: const Text(
+                    "Ticket no/Vehicle no not found",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        loaderdata = false;
+                        var set = context.read<GlobalProvider>();
+
+                        set.clearglobaldata('outticketDetails');
+                        setState(() {});
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "OK",
+                        style: TextStyle(fontSize: 12, color: yellow),
+                      ),
+                    )
+                  ],
+                );
+              });
+        });
+      } else {
+        setState(() {
+          isavaible = true;
+        });
+        await Future.delayed(const Duration(milliseconds: 300));
+        getOuterticketVehicle(ticketNo);
+      }
+    }
+  }
   Future<void> newSendOutdate() async {
     setState(() {
       loaderdata = true;
@@ -880,7 +1156,7 @@ class _OutTicketState extends State<OutTicket> {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '$baseUrl1/GetCalculateParkingPriceNew?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'));
+            '$baseUrl1/GetCalculateParkingPriceNewDynamic?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'));
 
     http.StreamedResponse response = await request.send();
 
@@ -897,6 +1173,41 @@ class _OutTicketState extends State<OutTicket> {
     });
   }
 
+  Future<void> getOuterticketVehicle(ticketNO) async {
+    var set = context.read<GlobalProvider>();
+    var get = Provider.of<GlobalProvider>(context, listen: false);
+    String companyNumber = get.getglobaldata['companyNumber'];
+    var locationId = get.getglobaldata['locationid'] ?? '';
+
+    // var response = await http.get(
+    //   Uri.parse('$baseUrl1/GetCalculateParkingPriceNew?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'),
+    // );
+    // if (response.statusCode == 200) {
+    //   var ticketNo = jsonDecode(response.body);
+    //   set.setglobaldata('outticketDetails', ticketNo[0]);
+    // }
+
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '$baseUrl1/GetCalculateParkingPriceNewDynamic?Ticket_No=$ticketNO&Company_Id=$companyNumber&LocationName=$locationId'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var data = (await response.stream.bytesToString());
+      var ticketNo = jsonDecode(data);
+      set.setglobaldata('outticketDetails', ticketNo[0]);
+    } else {
+      print(response.reasonPhrase);
+    }
+
+    setState(() {
+      loaderdata = false;
+    });
+  }
+
+
   Future<void> getOpen() async {
     var get = Provider.of<GlobalProvider>(context, listen: false);
     var headers = {'Content-Type': 'application/json'};
@@ -905,8 +1216,7 @@ class _OutTicketState extends State<OutTicket> {
     request.body = json.encode({
       "serialNo": get.getglobaldata['outControllerId'],
       "cmd": {"type": "control", "id": 1, "key": 1, "value": 1}
-      }
-    );
+    });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

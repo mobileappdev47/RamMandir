@@ -827,7 +827,7 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.addPrintLine(
                                         list1);
                                 List<TextPrintLine> list6 = printList(
-                                        "Parking_Time: ",
+                                        "Parking Time: ",
                                         "",
                                         parkingTime.toString(),
                                         20,
@@ -844,7 +844,7 @@ public class MainActivity extends FlutterActivity {
                                 printerManager.addPrintLine(
                                         list3);
                                 List<TextPrintLine> list7 = printList(
-                                        "Vehicle_Rate: ",
+                                        "Vehicle Rate: ",
                                         "",
                                         vehicleRate.toString() + "₹",
                                         20,

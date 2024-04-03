@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 
 class GlobalProvider extends ChangeNotifier {
+
+
   final Map<String, dynamic> _globaldata = {
     'hideField': true,
     'testNumber': 2,
