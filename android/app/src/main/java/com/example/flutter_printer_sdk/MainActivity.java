@@ -255,7 +255,7 @@ public class MainActivity extends FlutterActivity {
                     }
 
                     if (call.method.equals("outPrint")) {
-                        printTicket(call);
+                        printTicket(call,result);
 
                     } else if (call.method.equals("printText")) {
                         printTicketin(call);
@@ -487,9 +487,9 @@ public class MainActivity extends FlutterActivity {
 
 
 
-    public void printTicket(MethodCall call) {
+    public void printTicket(MethodCall call, MethodChannel.Result result) {
         String typer = call.argument("type").toString().trim();
-        if("vehicle".equals(typer) ) {
+      /*  if("vehicle".equals(typer) ) {
             System.out.println("TYPE is "+ typer);
             String ticketNo = call.argument("ticketNo").toString();
             String companyId = call.argument("company_Id").toString();
@@ -948,6 +948,208 @@ public class MainActivity extends FlutterActivity {
                 }
             });
             queue.add(jsonArrayRequest);
+        }*/
+
+
+        System.out.println("TYPE is "+ typer);
+        String ticketNo = call.argument("ticketNo").toString();
+        String companyId = call.argument("company_Id").toString();
+        String locationId = call.argument("locationId").toString();
+        String locationName = call.argument("locationName").toString();
+        String ticketDate = call.argument("Ticket_Date").toString();
+        String outDate = call.argument("Out_date").toString();
+        String parkingTime = call.argument("Parking_Time").toString();
+        String ticketNoText = call.argument("Ticket_No").toString();
+        String vehicleRate = call.argument("Vehicle_Rate").toString();
+        String vehicleNo = call.argument("Vehicle_No").toString();
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        String url = "https://accountsandtaxminers.com/ShreeRamAyodhyaParking_WebService.asmx/GetCalculateParkingPriceNewDynamic?Ticket_No=" + ticketNo + "&Company_Id=" + companyId +
+                "&LocationName=" + locationId;
+        System.out.println(url);
+        System.out.println("vehicle no---->> ticket "+ vehicleNo);
+        System.out.println("ticket no---->> ticket "+ ticketNoText);
+
+        try {
+
+            final POIPrinterManager printerManager = new POIPrinterManager(
+                    getApplicationContext());
+            printerManager.open();
+            System.out.println("Printer ticket ____++");
+            int state = printerManager
+                    .getPrinterState();
+
+            Log.d(TAG, "printer state = "
+                    + state);
+
+            printerManager.setPrintFont(
+                    "/system/fonts/Android-1.ttf");
+            printerManager.setPrintGray(
+                    2000);
+            printerManager.setLineSpace(
+                    5);
+
+            String str1 = locationName.toString();
+            PrintLine p1 = new TextPrintLine(
+                    str1,
+                    PrintLine.CENTER,
+                    27);
+            printerManager.addPrintLine(
+                    p1);
+            String str2 = "Out Ticket\n--------------------------------";
+            PrintLine p2 = new TextPrintLine(
+                    str2,
+                    PrintLine.CENTER,
+                    40);
+            printerManager.addPrintLine(
+                    p2);
+
+//                                String str3 = "-----------------------------";
+//                                PrintLine p3 = new TextPrintLine(
+//                                        str3,
+//                                        PrintLine.CENTER,
+//                                        27);
+//
+//                                printerManager.addPrintLine(
+//                                        p3);
+            printerManager.setPrintFont(
+                    "/system/fonts/DroidSansMono.ttf");
+            // Bitmap bitmap = TexttoImageEncode(
+            // MainActivity.this,
+            // jsonObject.getString(
+            // "Ticket_No"));
+            // printerManager.addPrintLine(
+            // new BitmapPrintLine(
+            // bitmap,
+            // PrintLine.CENTER));
+            List<TextPrintLine> list5 = printList(
+                    "Ticket Date: ",
+                    "",
+                    ticketDate.toString(),
+                    20,
+                    true
+            );
+            printerManager.addPrintLine(
+                    list5);
+            List<TextPrintLine> list1 = printList(
+                    "Out Date: ",
+                    "",
+                    outDate.toString(),
+                    20,
+                    true);
+            printerManager.addPrintLine(
+                    list1);
+            List<TextPrintLine> list6 = printList(
+                    "Parking Time: ",
+                    "",
+                    parkingTime.toString(),
+                    20,
+                    true
+            );
+            printerManager.addPrintLine(
+                    list6);
+            List<TextPrintLine> list3 = printList(
+                    "Ticket No: ",
+                    "",
+                    ticketNoText.toString(),
+                    20,
+                    true);
+            printerManager.addPrintLine(
+                    list3);
+            List<TextPrintLine> list7 = printList(
+                    "Vehicle Rate: ",
+                    "",
+                    vehicleRate.toString() + "₹",
+                    20,
+                    true);
+            printerManager.addPrintLine(
+                    list7);
+            List<TextPrintLine> list4 = printList(
+                    "Vehical Number",
+                    "",
+                    vehicleNo.toString(),
+                    20,
+                    true);
+            printerManager.addPrintLine(
+                    list4);
+
+//
+//                                String str6 = jsonobject.getString(
+//                                        "Email");
+//                                PrintLine p6 = new TextPrintLine(
+//                                        str6,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p6);
+//                                String str7 = jsonobject.getString(
+//                                        "PhoneNo");
+//                                PrintLine p7 = new TextPrintLine(
+//                                        str7,
+//                                        PrintLine.CENTER,
+//                                        15);
+//                                printerManager.addPrintLine(
+//                                        p7);
+            String str8 = "_____________________";
+            PrintLine p8 = new TextPrintLine(
+                    str8,
+                    PrintLine.CENTER,
+                    27);
+
+            printerManager.addPrintLine(
+                    p8);
+//                                String str8 = "                    \n                  \n                 ";
+//                                PrintLine p8 = new TextPrintLine(str8, PrintLine.CENTER, 18);
+//                                printerManager.addPrintLine(p8);
+            String str5 = "****** Thank You ******\n"
+                    + "                      \n                      \n                      \n";
+            PrintLine p5 = new TextPrintLine(str5,
+                    PrintLine.CENTER,
+                    18);
+            printerManager.addPrintLine(p5);
+
+            printerManager.setPrintGray(2000);
+            printerManager.setLineSpace(
+                    10);
+
+
+            POIPrinterManager.IPrinterListener listener = new POIPrinterManager.IPrinterListener() {
+                @Override
+                public void onStart() {
+                    System.out.println("Printer ticket start____++");
+                }
+
+                @Override
+                public void onFinish() {
+                    System.out.println("Printer end start ____++");
+                    result.success("Done");
+                    printerManager.cleanCache();
+                    printerManager.close();
+                }
+
+                @Override
+                public void onError(
+                        int code,
+                        String msg) {
+                    Log.e("POIPrinterManager",
+                            "code: " + code + "msg: "
+                                    + msg);
+                    System.out.println("Printer error ticket ____++" + msg.toString());
+                    printerManager.close();
+                }
+            };
+            if (state == 4) {
+                printerManager.close();
+                return;
+            }
+            printerManager.beginPrint(
+                    listener);
+
+
+        }
+        catch (Exception e) {
+            System.out.println("Eror----ticket" + e.toString());
+
+            e.printStackTrace();
         }
     }
 

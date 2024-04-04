@@ -177,7 +177,7 @@ class _DrawWidgetState extends State<DrawWidget> {
                   children: [
                     Text("App Version:- ",
                         style: TextStyle(color: Colors.grey)),
-                    Text("12.0.0", style: TextStyle(color: Colors.grey)),
+                    Text("13.0.0", style: TextStyle(color: Colors.grey)),
                   ]))
         ]),
       ),

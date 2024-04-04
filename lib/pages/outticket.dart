@@ -702,11 +702,12 @@ List vehicleList = [];
             FloatingActionButton.small(
                         backgroundColor: appBackgroundColor,
                         onPressed: () async {
-                          ticketUpdate(ticketNumber: searchticket.text);
-                          await channel.invokeMethod("outPrint", {
+
+                        String result =   await channel.invokeMethod("outPrint", {
                             "data": get.getglobaldata['outticketDetails'],
                             "company_Id": companyNumber,
                             "ticketNo": searchticket.text,
+                            "locationName":get.getglobaldata['outticketDetails']['LocationName'],
                             "locationId": locationId,
                             "type": "ticket",
                             "Ticket_Date": get.getglobaldata['outticketDetails']
@@ -731,7 +732,8 @@ List vehicleList = [];
                                 .toString(),
                           });
 
-                          getOpen();
+                         await ticketUpdate(ticketNumber: searchticket.text);
+                          await getOpen();
                         },
                         child: const Icon(Icons.print, color: Colors.white))
             //         :
@@ -913,6 +915,7 @@ List vehicleList = [];
     );
     if (response.statusCode == 200) {
       searchticket.clear();
+      searchvehicle.clear();
       set.clearglobaldata('outticketDetails');
       if (mounted) FocusScope.of(context).requestFocus(firstFocus);
     }
@@ -1159,10 +1162,11 @@ List vehicleList = [];
             '$baseUrl1/GetCalculateParkingPriceNewDynamic?Ticket_No=$ticketNo&Company_Id=$companyNumber&LocationName=$locationId'));
 
     http.StreamedResponse response = await request.send();
-
+print(response);
     if (response.statusCode == 200) {
       var data = (await response.stream.bytesToString());
       var ticketNo = jsonDecode(data);
+      print(data);
       set.setglobaldata('outticketDetails', ticketNo[0]);
     } else {
       print(response.reasonPhrase);

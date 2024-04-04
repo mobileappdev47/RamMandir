@@ -62,7 +62,7 @@ class _EntrypointState extends State<Entrypoint> {
     }
     if (!mounted) return;
     setState(() {
-      set.setglobaldata('uniqueId', identifier);
+      set.setglobaldata('uniqueId', '0b89e5df6e0f7788');
     });
   }
 
