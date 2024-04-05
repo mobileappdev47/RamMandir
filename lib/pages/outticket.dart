@@ -668,7 +668,8 @@ List vehicleList = [];
                         backgroundColor: appBackgroundColor,
                         surfaceTintColor: appBackgroundColor,
                         title: const Text(
-                          'Vehicle is already out',
+                         // 'Vehicle is already out',
+                          'Vehicle not found',
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -822,6 +823,7 @@ List vehicleList = [];
       if (data['status'].toString() == '1') {
 
         vehicleList=data['body'];
+
         setState(() {
 
         });
@@ -830,12 +832,16 @@ List vehicleList = [];
         if (mounted) FocusScope.of(context).requestFocus(firstFocus);
       }
     }
+    if(vehicleList.length ==0)
+    {
+      checkVehicleprint =true;
+    }
     loaderdata = false ;
     setState(() {
 
     });
   }
-  Future<void> checkOutprintflagDetails({required String ticketNo}) async {
+  Future<void> checkOutprintflagDetails({required String ticketNo,}) async {
     var get = Provider.of<GlobalProvider>(context, listen: false);
     String companyNumber = get.getglobaldata['companyNumber'];
     var reponse = await http.get(Uri.parse(
@@ -917,6 +923,7 @@ List vehicleList = [];
       searchticket.clear();
       searchvehicle.clear();
       set.clearglobaldata('outticketDetails');
+      setState((){});
       if (mounted) FocusScope.of(context).requestFocus(firstFocus);
     }
   }
